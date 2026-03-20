@@ -1,17 +1,114 @@
-import { AuthView } from '@clerk/expo/native'
-import { useAuth } from '@clerk/expo'
-import { useRouter } from 'expo-router'
-import { useEffect } from 'react'
+import { Image, Pressable, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import useSocialAuth from "../hooks/useSocialAuth";
+
+import { FontAwesome, FontAwesome6 } from "@expo/vector-icons";
 
 export default function SignInScreen() {
-  const { isSignedIn } = useAuth()
-  const router = useRouter()
+  const {handleSocialAuth, loadingStrategy} = useSocialAuth();
 
-  useEffect(() => {
-    if (isSignedIn) {
-      router.replace('/(home)')
-    }
-  }, [isSignedIn])
+  const isGoogleClicked = loadingStrategy === "oauth_google";
+  const isGithubClicked = loadingStrategy === "oauth_github";
+  const isAppleClicked = loadingStrategy === "oauth_apple";
 
-  return <AuthView mode="signInOrUp" />
+  const isLoading = isAppleClicked || isGithubClicked || isGoogleClicked;
+
+  return (
+    <SafeAreaView className="flex-1 bg-primary dark:bg-secondary" edges={["top"]}>
+      <View className="absolute -left-16 top-12 h-56 w-56 rounded-full bg-primary/80 dark:bg-primary/40" />
+      <View className="absolute right-[-74px] top-40 h-72 w-72 rounded-full bg-primary/70 dark:bg-primary/35" />
+
+      <View className="px-6 pt-4">
+        <Text className="text-center text-5xl font-extrabold tracking-tight text-primary-foreground uppercase font-mono dark:text-foreground">
+            GROCIFY
+        </Text>
+
+        <Text className="mt-1 text-center text-[14px] text-primary-foreground/80 dark:text-foreground/75">
+            Plan Smarter. Shop Happier
+        </Text>
+
+        <View className="mt-6 rounded-[30px] border border-white/20 bg-white/10 p-2">
+          <Image 
+            source={require("../../../assets/images/auth.png")}
+            style={{width:"100%", height:250, resizeMode:"contain"}}
+            />
+        </View>
+      </View>
+
+      <View className="mt-8 flex-1 rounded-t-[36px] bg-card px-6 pb-8 pt-6">
+        <View className="self-center rounded-full bg-secondary px-3 py-1">
+          <Text className="text-xs font-semibold uppercase tracking-[1px] text-secondary-foreground">Welcome Back</Text>
+        </View>
+
+          <Text className="mt-2 text-center text-sm leading-6 text-muted-foreground">
+            Choose a social provider and jump right into personalized experience
+          </Text>
+
+          <View className="mt-6">
+
+            <Pressable
+              className={`mb-3 h-14 flex-row items-center rounded-2xl border border-border bg-card px-4 active:opacity-90 ${
+                isLoading ? "opacity-70" : ""
+              }`}
+              disabled={isLoading}
+              onPress={() => handleSocialAuth("oauth_google")}
+              >
+                <View className="h-8 w-8 items-center justify-center rounded-full bg-white">
+                  <Image 
+                      source={require("../../../assets/images/google.png")}
+                      style={{height:20, width:20}}
+                    />
+                </View>
+
+                <Text 
+                  className="ml-3 flex-1 text-lg font-semibold text-card-foreground">{isGoogleClicked ? "Connecting Google..." : "Continue with Google"}
+                </Text>
+
+                <FontAwesome name="angle-right" size={18} color="#5f6e66" /> 
+            </Pressable>
+
+            <Pressable
+              className={`mb-3 h-14 flex-row items-center rounded-2xl border border-border bg-card px-4 active:opacity-90 ${
+                isLoading ? "opacity-70" : ""
+              }`}
+              disabled={isLoading}
+              onPress={() => handleSocialAuth("oauth_github")}
+              >
+                <View className="h-8 w-8 items-center justify-center rounded-full bg-white">
+                  <FontAwesome name="github" size={24} color="#111" />
+                </View>
+
+                <Text 
+                  className="ml-3 flex-1 text-lg font-semibold text-card-foreground">{isGithubClicked ? "Connecting Github..." : "Continue with Github"}
+                </Text>
+
+                <FontAwesome name="angle-right" size={18} color="#5f6e66" /> 
+            </Pressable>
+
+            <Pressable
+              className={`mb-3 h-14 flex-row items-center rounded-2xl border border-border bg-card px-4 active:opacity-90 ${
+                isLoading ? "opacity-70" : ""
+              }`}
+              disabled={isLoading}
+              onPress={() => handleSocialAuth("oauth_apple")}
+              >
+                <View className="h-8 w-8 items-center justify-center rounded-full bg-white">
+                  <FontAwesome6 name="apple" size={18} color="#111" />
+                </View>
+
+                <Text 
+                  className="ml-3 flex-1 text-lg font-semibold text-card-foreground">{isAppleClicked ? "Connecting Apple..." : "Continue with Apple"}
+                </Text>
+
+                <FontAwesome name="angle-right" size={18} color="#5f6e66" /> 
+            </Pressable>
+          </View>
+
+          <Text className="mt-3 text-center text-sm leading-5 text-muted-foreground">
+            By continuing, you agree to our Terms and Privacy Policy
+          </Text>
+      </View>
+
+    </SafeAreaView>
+  )
 }
