@@ -4,7 +4,14 @@ import "../../globals.css";
 
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { Stack } from "expo-router";
-import { useColorScheme } from 'react-native';
+import { LogBox, useColorScheme } from 'react-native';
+
+LogBox.ignoreLogs([
+  "Codegen didn't run for ClerkAuthView",
+  "Codegen didn't run for ClerkUserProfileView",
+  "`new NativeEventEmitter()` was called with a non-null argument without the required `addListener` method.",
+  "`new NativeEventEmitter()` was called with a non-null argument without the required `removeListeners` method."
+]);
 
 const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!
 
@@ -12,9 +19,9 @@ if (!publishableKey) {
   throw new Error('Add your Clerk Publishable Key to the .env file')
 }
 
-const colorScheme = useColorScheme();
-
 export default function RootLayout() {
+  const colorScheme = useColorScheme();
+
   return (
     <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
       <ThemeProvider value={colorScheme == "light" ? DarkTheme : DefaultTheme}>
