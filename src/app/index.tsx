@@ -1,10 +1,9 @@
-import { Image } from "expo-image";
 import { StyleSheet, Text, View } from "react-native";
 
 export default function Index() {
   return (
     <View style={styles.container}>
-      <Text>Hi</Text>
+      <Text className="text-xl text-blue-500">Piku</Text>
     </View>
   );
 }
