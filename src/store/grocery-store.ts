@@ -62,7 +62,7 @@ export const useGroceryStore = create<GroceryStore>((set,get) => ({
         try {
             const res = await fetch("/api/items", {
                 method: "POST",
-                headers: {"Content Type": "application/json"},
+                headers: {"Content-Type": "application/json"},
                 body: JSON.stringify({
                     name: input.name,
                     category: input.category,
@@ -89,7 +89,7 @@ export const useGroceryStore = create<GroceryStore>((set,get) => ({
         try {
             const res = await fetch (`/api/items/${id}`, {
                 method: "PATCH",
-                headers: {"Content Type": "application/json"},
+                headers: {"Content-Type": "application/json"},
                 body: JSON.stringify({quantity: nextQuantity})
             });
 
@@ -116,7 +116,7 @@ export const useGroceryStore = create<GroceryStore>((set,get) => ({
         try {
             const res = await fetch (`/api/items/${id}`, {
                 method: "PATCH",
-                headers: {"Content Type" : "Application/json"},
+                headers: {"Content-Type": "application/json"},
                 body: JSON.stringify({purchased: nextPurchased})
             });
 

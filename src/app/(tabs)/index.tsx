@@ -1,55 +1,56 @@
+import CompletedItems from '@/components/List/CompletedItems'
+import ListHeroCard from '@/components/List/ListHeroCard'
+import PendingItemCard from '@/components/List/PendingItemCard'
+import TabScreenBackground from '@/components/TabScreenBackground'
 import { useGroceryStore } from '@/store/grocery-store'
-import { Show, useUser } from '@clerk/expo'
-import { useClerk } from '@clerk/expo'
-import { UserButton, UserProfileView } from '@clerk/expo/native'
-import { Link } from 'expo-router'
-import { Text, View, Pressable, StyleSheet } from 'react-native'
+import { useEffect } from 'react'
+import { FlatList, ScrollView, Text, View } from 'react-native'
 
 export default function Page() {
-  const { user } = useUser()
-  const { signOut } = useClerk()
+
+  const { items, loadItems } = useGroceryStore();
+
+  useEffect(() => {
+    loadItems();
+  }, []);
+
+  const pendingItems = items.filter((item) => !item.purchased)
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Welcome!</Text>
-      
-      <Show when="signed-in">
-        <Text>Hello {user?.emailAddresses[0].emailAddress}</Text>
-        <Pressable style={styles.button} onPress={() => signOut()}>
-          <Text style={styles.buttonText}>Sign out</Text>
-        </Pressable>
+    <ScrollView className='flex-1 bg-background py-4'
+      showsVerticalScrollIndicator={false}
+      contentContainerStyle={{padding:20, gap:20}}
+    >
+    <TabScreenBackground />
 
-        <View style={{ width: 36, height: 36, borderRadius: 18, overflow: 'hidden' }}>
-          <UserButton />
-        </View>
+      <FlatList 
+        className='flex-1'
+        data={pendingItems}
+        keyExtractor={item => item.id}
+        renderItem={({item}) => <PendingItemCard item={item}/>}
+        contentContainerStyle={{ gap:14}}
+        contentInsetAdjustmentBehavior='automatic'
+        ListHeaderComponent={
+          <View style={{padding:10, gap:20}}>
+            <ListHeroCard />
 
-        <UserProfileView style={{ flex: 1 }} />
+            <View className='flex-row items-center justify-between px-1'>
+              <Text 
+                className='text-sm font-semibold uppercase tracking-[1px] text-muted-foreground'
+              >
+                Shoping Items
+              </Text>
+
+              <Text className='text-sm text-muted-foreground'>
+                {pendingItems.length} active
+              </Text>
+            </View>
+          </View>
+          }
+        ListFooterComponent={<CompletedItems />}
+        ListEmptyComponent={<Text className='text-white'>NO ITEMS IN DB</Text>}
+      />
         
-      </Show>
-    </View>
+    </ScrollView>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-    paddingTop: 60,
-    gap: 16,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-  },
-  button: {
-    backgroundColor: '#0a7ea4',
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    borderRadius: 8,
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: '#fff',
-    fontWeight: '600',
-  },
-})
