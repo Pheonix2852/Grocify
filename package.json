@@ -53,6 +53,8 @@
   "devDependencies": {
     "@types/react": "~19.2.2",
     "drizzle-kit": "^0.31.10",
+    "patch-package": "^8.0.1",
+    "postinstall-postinstall": "^2.1.0",
     "typescript": "~5.9.2"
   },
   "private": true
