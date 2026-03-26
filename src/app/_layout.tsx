@@ -1,6 +1,8 @@
 import { ClerkProvider } from '@clerk/expo';
 import { tokenCache } from '@clerk/expo/token-cache';
 import "../../globals.css";
+import {KeyboardProvider} from "react-native-keyboard-controller"
+
 
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { Stack } from "expo-router";
@@ -24,9 +26,11 @@ export default function RootLayout() {
 
   return (
     <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
-      <ThemeProvider value={colorScheme == "light" ? DarkTheme : DefaultTheme}>
-        <Stack screenOptions={{ headerShown: false }} />
-      </ThemeProvider>
+      <KeyboardProvider>
+        <ThemeProvider value={colorScheme == "light" ? DarkTheme : DefaultTheme}>
+          <Stack screenOptions={{ headerShown: false }} />
+        </ThemeProvider>
+      </KeyboardProvider>
     </ClerkProvider>
   );
 }

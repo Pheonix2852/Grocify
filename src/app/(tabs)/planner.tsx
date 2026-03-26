@@ -1,8 +1,11 @@
+import PlannerFormCard from '@/components/Planner/PlannerFormCard';
+import PlannerHeroImage from '@/components/Planner/PlannerHeroImage';
 import TabScreenBackground from '@/components/TabScreenBackground';
 import { useGroceryStore } from '@/store/grocery-store';
 import { FontAwesome6 } from "@expo/vector-icons";
 import React from 'react';
-import { ScrollView, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 
 const PlannerScreen = () => {
 
@@ -15,11 +18,13 @@ const PlannerScreen = () => {
   
 
   return (
-    <ScrollView 
+    <KeyboardAwareScrollView 
+      bottomOffset={80}
       className='flex-1 bg-background py-4'
       contentInsetAdjustmentBehavior='automatic'
       showsVerticalScrollIndicator={false}
       contentContainerStyle={{padding:20, gap:14}}
+      keyboardShouldPersistTaps="handled"
     >
       <TabScreenBackground /> 
 
@@ -55,7 +60,7 @@ const PlannerScreen = () => {
 
           <View className='flex-1 rounded-2xl border border-border bg-background/80 p-3'>
             <Text className='text-xs font-medium uppercase tracking-[1px] text-muted-foreground'>
-              High Priority
+              Priority
             </Text>
             <Text className='mt-1 text-xl font-bold text-foreground'>
               {highPriorityCount}
@@ -72,7 +77,20 @@ const PlannerScreen = () => {
           </View>          
         </View>
       </View> 
-    </ScrollView>
+
+      <PlannerHeroImage />
+
+      <View className='px-1'>
+        <Text className='text-sm font-semibold uppercase tracking-[1px] text-muted-foreground'>
+          Build Your List
+        </Text>
+        <Text className='mt-1 text-sm text-muted-foreground'>
+          Add items with the right quantity, category & urgency
+        </Text>
+
+        <PlannerFormCard />
+      </View>
+    </KeyboardAwareScrollView>
   )
 }
 
