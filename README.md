@@ -1,56 +1,137 @@
-# Welcome to your Expo app 👋
+# Grocify
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+![Version](https://img.shields.io/badge/version-1.0.0-208AEF)
+![Expo SDK](https://img.shields.io/badge/expo-SDK%2055-1C1E24)
+![React Native](https://img.shields.io/badge/react--native-0.83-61DAFB)
 
-## Get started
+Grocify is a full-stack grocery planning app built with Expo, React Native, Expo Router, Clerk authentication, and a Neon Postgres database via Drizzle ORM.
 
-1. Install dependencies
+It helps users plan grocery runs with item priority, quantity controls, completion tracking, and quick shopping insights.
 
-   ```bash
-   npm install
-   ```
+## Table of Contents
 
-2. Start the app
+- [What This Project Does](#what-this-project-does)
+- [Why This Project Is Useful](#why-this-project-is-useful)
+- [Tech Stack](#tech-stack)
+- [How To Get Started](#how-to-get-started)
+- [Usage Examples](#usage-examples)
+- [Where To Get Help](#where-to-get-help)
+- [Who Maintains And Contributes](#who-maintains-and-contributes)
 
-   ```bash
-   npx expo start
-   ```
+## What This Project Does
 
-In the output, you'll find options to open the app in a
+Grocify provides:
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+- Social sign-in with Google, GitHub, and Apple (via Clerk)
+- A tabbed mobile experience for Home, Planner, and Insights flows
+- Item creation, quantity updates, purchased toggles, and item deletion
+- Priority and category tracking across grocery items
+- Clear-all completed item workflow
+- In-app feedback and crash reporting integration (Sentry)
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+Core UI routes live under [src/app](src/app), and API handlers are defined in [src/app/api/items](src/app/api/items).
 
-## Get a fresh project
+## Why This Project Is Useful
 
-When you're ready, run:
+Grocify is useful as both a production-ready grocery tracker and a reference architecture for Expo apps that need:
+
+- Authenticated mobile UX with Clerk + Expo Router
+- Type-safe server data access using Drizzle + Neon Postgres
+- File-based API route handlers alongside React Native screens
+- Simple but scalable client state management using Zustand
+- A modern React Native UI stack with NativeWind
+
+## Tech Stack
+
+- Expo SDK 55 + React Native 0.83 + React 19
+- Expo Router (typed routes enabled)
+- Clerk Expo SDK for auth
+- Drizzle ORM + drizzle-kit
+- Neon serverless Postgres
+- Zustand state management
+- NativeWind + Tailwind CSS
+- Sentry for monitoring and feedback
+
+## How To Get Started
+
+### 1) Prerequisites
+
+- Node.js 20+
+- npm 10+
+- Expo tooling for local device/emulator testing
+- A Neon Postgres database
+- A Clerk application (publishable key)
+- Optional: Sentry DSN for monitoring
+
+### 2) Install dependencies
 
 ```bash
-npm run reset-project
+npm install
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+### 3) Configure environment variables
 
-### Other setup steps
+Create a `.env` file in the repository root:
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+```bash
+EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_xxxxxxxxxxxxxxxxx
+EXPO_PUBLIC_SENTRY_DSN=https://examplePublicKey@o0.ingest.sentry.io/0
+DATABASE_URL=postgresql://USER:PASSWORD@HOST:5432/DBNAME?sslmode=require
+```
 
-## Learn more
+Notes:
 
-To learn more about developing your project with Expo, look at the following resources:
+- `EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY` is required to boot the app.
+- `DATABASE_URL` is required for API routes, schema push, and seed scripts.
+- `EXPO_PUBLIC_SENTRY_DSN` is recommended for error monitoring.
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+### 4) Push database schema
 
-## Join the community
+```bash
+npm run db:push
+```
 
-Join our community of developers creating universal apps.
+### 5) Seed local data (optional)
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+```bash
+npm run seed:grocery
+```
+
+### 6) Run the app
+
+```bash
+npm run start
+```
+
+Useful run commands:
+
+```bash
+npm run android
+npm run ios
+npm run web
+```
+
+## Usage Examples
+
+### Add and manage grocery items in the app
+
+1. Sign in with a social provider on the auth screen.
+2. Open the Planner tab and add item name, category, quantity, and priority.
+3. Open Home to update quantity, mark purchased, or delete items.
+4. Open Insights to review stats and clear completed items.
+
+### Interact with API routes directly during development
+
+List items:
+
+```bash
+curl http://localhost:8081/api/items
+```
+
+Create an item:
+
+```bash
+curl -X POST http://localhost:8081/api/items \
+  -H "Content-Type: application/json" \
+  -d '{"name":"Milk","category":"Dairy","quantity":2,"priority":"high"}'
+```
