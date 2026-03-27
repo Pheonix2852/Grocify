@@ -1,3 +1,8 @@
+
+<p align="center">
+  <img src="assets/images/Readme.jpg" alt="Grocify App Hero" width="100%" />
+</p>
+
 # Grocify
 
 ![Version](https://img.shields.io/badge/version-1.0.0-208AEF)
