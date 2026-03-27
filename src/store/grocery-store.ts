@@ -1,4 +1,3 @@
-import { POST } from "@/app/api/items/index+api"
 import { create } from "zustand"
 
 export type GroceryCategory = "Produce" | "Dairy" | "Bakery" | "Pantry" | "Snacks"
@@ -154,7 +153,7 @@ export const useGroceryStore = create<GroceryStore>((set,get) => ({
     clearPurchased: async () => {
         set({error:null});
         try {
-            const res = await fetch ("api/item/clear-purchased", {
+            const res = await fetch ("/api/items/clear-purchased", {
                 method: "POST"
             })
             if(!res.ok) throw new Error(`Request Failed (${res.status})`);

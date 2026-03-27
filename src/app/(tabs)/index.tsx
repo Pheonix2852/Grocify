@@ -28,7 +28,7 @@ export default function Page() {
         data={pendingItems}
         keyExtractor={item => item.id}
         renderItem={({item}) => <PendingItemCard item={item}/>}
-        contentContainerStyle={{ gap:14}}
+        contentContainerStyle={{ gap:14, paddingTop: 20}}
         contentInsetAdjustmentBehavior='automatic'
         ListHeaderComponent={
           <View style={{padding:10, gap:20}}>

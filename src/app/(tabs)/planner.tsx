@@ -25,6 +25,7 @@ const PlannerScreen = () => {
       showsVerticalScrollIndicator={false}
       contentContainerStyle={{padding:20, gap:14}}
       keyboardShouldPersistTaps="handled"
+      style={{paddingTop: 40}}
     >
       <TabScreenBackground /> 
 
