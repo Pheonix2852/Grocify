@@ -1,6 +1,6 @@
 
 <p align="center">
-  <img src="assets/images/Readme.jpg" alt="Grocify App Hero" width="100%" />
+  <img src="assets/images/Readme.png" alt="Grocify App Hero" width="100%" />
 </p>
 
 # Grocify
